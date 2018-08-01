@@ -4,6 +4,7 @@ using TwitterSearcher.Models;
 using Tweetinvi;
 using Tweetinvi.Models;
 using Tweetinvi.Parameters;
+using System.Linq;
 
 namespace SearchProject.Controllers
 {
@@ -60,20 +61,57 @@ namespace SearchProject.Controllers
                 {
                     foreach (string word in text)
                     {
-                        if (counter.ContainsKey(word))
+                        if (counter.ContainsKey(word.ToLower()))
                         {
-                            counter[word]++;
+                            counter[word.ToLower()]++;
                         }
                         else
                         {
-                            counter.Add(word, 1);
+                            counter.Add(word.ToLower(), 1);
                         }
                     }
                 }
 
+                //checks if word occurs more than 1/10 of the sample size and removes if it does - eliminiting one-off words.
+                Dictionary<string, int> ccounter = new Dictionary<string, int>();
+                foreach (KeyValuePair<string, int> word in counter)
+                {
+                    if (word.Value <= (newAnalyzeViewModel.SampleSize / 100))
+                    {
+                        ccounter.Add(word.Key, word.Value);
+                    }
+                }
+                foreach (KeyValuePair<string, int> word in ccounter)
+                {
+                    counter.Remove(word.Key);
+                }
+
+                //checks if word in list of 'fluff' words and removes them
+                string[] fluff = new string[]{ newAnalyzeViewModel.Keyword, "the", "and", "rt", " ", "", "a", "i", "in", "to", "of", "it", "you", "this" };
+                foreach (string word in fluff)
+                {
+                    if (counter.ContainsKey(word))
+                    {
+                        counter.Remove(word);
+                    }
+                }
+                
+                //user sort-by
+                if (newAnalyzeViewModel.SortBy == "descending")
+                {
+                    IOrderedEnumerable<KeyValuePair<string, int>> SortedCounter = from entry in counter orderby entry.Value descending select entry;
+                    newAnalyzeViewModel.Counter = SortedCounter;
+                    return View(newAnalyzeViewModel);
+                }
+                else
+                {
+                    IOrderedEnumerable<KeyValuePair<string, int>> SortedCounter = from entry in counter orderby entry.Value ascending select entry;
+                    newAnalyzeViewModel.Counter = SortedCounter;
+                    return View(newAnalyzeViewModel);
+                }
+                
                 //Finally the ViewModel's Counter is set to the function's and the data is displayed in the view.
-                newAnalyzeViewModel.Counter = counter;
-                return View(newAnalyzeViewModel);
+                
             }
             else
             {

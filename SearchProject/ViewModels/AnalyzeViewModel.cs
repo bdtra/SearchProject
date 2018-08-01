@@ -13,9 +13,12 @@ namespace TwitterSearcher.Models
         public string Keyword { get; set; }
 
         [Required]
+        public string SortBy { get; set; }
+
+        [Required]
         public int SampleSize { get; set; }
 
-        public Dictionary<string, int> Counter { get; set; }
+        public IOrderedEnumerable<KeyValuePair<string, int>> Counter { get; set; }
 
         public AnalyzeViewModel()
         {
