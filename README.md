@@ -1,9 +1,9 @@
 # Twitter analyzer
 
-##Description
+## Description
 This project allows a user to input a keyword and receive post data containing keyword and a table of words that also occur and their frequency.
 
-##Languages and Technologies
+## Languages and Technologies
 This project utilizes .Net Core, C#, Razer and Linq for the Controllers and Templates. It also uses the TweetInvi API to interface with Twitter.
 
 ### Features
