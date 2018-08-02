@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using TwitterSearcher.Models;
+using TwitterSearcher.ViewModels;
 using Tweetinvi;
 using Tweetinvi.Models;
 using Tweetinvi.Parameters;
 using System.Linq;
 
-namespace SearchProject.Controllers
+namespace TwitterSearcher.Controllers
 {
     public class HomeController : Controller
     {

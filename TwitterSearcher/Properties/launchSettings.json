@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "SearchProject": {
+    "TwitterSearcher": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

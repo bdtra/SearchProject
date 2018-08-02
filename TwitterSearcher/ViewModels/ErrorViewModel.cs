@@ -1,6 +1,6 @@
 using System;
 
-namespace SearchProject.Models
+namespace TwitterSearcher.ViewModels
 {
     public class ErrorViewModel
     {
