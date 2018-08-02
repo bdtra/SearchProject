@@ -20,13 +20,13 @@ namespace TwitterSearcher.Controllers
                                     "963967640753655809-ZMrjjJP4F7lxCR94DUetJkROY6f1gpx", 
                                     "ILZMtk7b6lk4dBdekuJz5AvN9NPCghBw4IkqOVCTwuBfT");
 
-            AnalyzeViewModel newAnalyzeViewModel = new AnalyzeViewModel();
+            SearchViewModel newSearchViewModel = new SearchViewModel();
 
-            return View(newAnalyzeViewModel);
+            return View(newSearchViewModel);
         }
 
         [HttpPost]
-        public IActionResult Index(AnalyzeViewModel newAnalyzeViewModel)
+        public IActionResult Index(SearchViewModel newSearchViewModel)
         {
             //On Post, Verify the model and display data with form. If model not valid, refresh the page.
             if (ModelState.IsValid)
@@ -42,11 +42,11 @@ namespace TwitterSearcher.Controllers
                  * that pulls both popular and recent posts and 
                  * sets the number of results to the user's sample size.
                  ***/
-                var searchParameter = new SearchTweetsParameters(newAnalyzeViewModel.Keyword)
+                var searchParameter = new SearchTweetsParameters(newSearchViewModel.Keyword)
                 {
                     Lang = LanguageFilter.English,
                     SearchType = SearchResultType.Mixed,
-                    MaximumNumberOfResults = newAnalyzeViewModel.SampleSize,
+                    MaximumNumberOfResults = newSearchViewModel.SampleSize,
                 };
 
                 //All posts are pulled here and added to the content list.
@@ -76,7 +76,7 @@ namespace TwitterSearcher.Controllers
                 Dictionary<string, int> ccounter = new Dictionary<string, int>();
                 foreach (KeyValuePair<string, int> word in counter)
                 {
-                    if (word.Value <= (newAnalyzeViewModel.SampleSize / 100))
+                    if (word.Value <= (newSearchViewModel.SampleSize / 100))
                     {
                         ccounter.Add(word.Key, word.Value);
                     }
@@ -87,7 +87,7 @@ namespace TwitterSearcher.Controllers
                 }
 
                 //checks if word in list of 'fluff' words and removes them
-                string[] fluff = new string[]{ newAnalyzeViewModel.Keyword, "the", "and", "rt", " ", "", "a", "i", "in", "to", "of", "it", "you", "this" };
+                string[] fluff = new string[]{ newSearchViewModel.Keyword, "the", "and", "rt", " ", "", "a", "i", "in", "to", "of", "it", "you", "this" };
                 foreach (string word in fluff)
                 {
                     if (counter.ContainsKey(word))
@@ -95,28 +95,28 @@ namespace TwitterSearcher.Controllers
                         counter.Remove(word);
                     }
                 }
-                
+                //saves search if user is logged in
+                //if (Session["UserID"] != null)
+                {
+                }
                 //user sort-by
-                if (newAnalyzeViewModel.SortBy == "descending")
+                if (newSearchViewModel.SortBy == "descending")
                 {
                     IOrderedEnumerable<KeyValuePair<string, int>> SortedCounter = from entry in counter orderby entry.Value descending select entry;
-                    newAnalyzeViewModel.Counter = SortedCounter;
-                    return View(newAnalyzeViewModel);
+                    newSearchViewModel.Counter = SortedCounter;
+                    return View(newSearchViewModel);
                 }
                 else
                 {
                     IOrderedEnumerable<KeyValuePair<string, int>> SortedCounter = from entry in counter orderby entry.Value ascending select entry;
-                    newAnalyzeViewModel.Counter = SortedCounter;
-                    return View(newAnalyzeViewModel);
+                    newSearchViewModel.Counter = SortedCounter;
+                    return View(newSearchViewModel);
                 }
-                
-                //Finally the ViewModel's Counter is set to the function's and the data is displayed in the view.
-                
             }
             else
             {
                 //If there is no input, the page is refreshed.
-                return View(newAnalyzeViewModel);
+                return View(newSearchViewModel);
             }
         }
     }

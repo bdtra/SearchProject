@@ -1,21 +1,15 @@
 using System;
+using System.Collections.Generic;
 
 namespace TwitterSearcher.Models
 {
     public class User
     {
-        private int UserID { get; set; } = 1;
-
+        public int UserID { get; set; }
         public string Username { get; set; }
-
         public string Email { get; set; }
-
         public string Password { get; set; }
-
-        public User()
-        {
-            UserID++;
-        }
+        public IList<UserSearch> UserSearches { get; set; }
     }
 
     

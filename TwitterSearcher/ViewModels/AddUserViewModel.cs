@@ -20,6 +20,9 @@ namespace TwitterSearcher.ViewModels
         [Required]
         public string Verify { get; set; }
 
+        public int UserID { get; set; }
+
+
         public AddUserViewModel()
         {
 

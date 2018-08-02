@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace TwitterSearcher.ViewModels
 {
-    public class AnalyzeViewModel
+    public class SearchViewModel
     {
         [Required]
         public string Keyword { get; set; }
@@ -17,7 +17,7 @@ namespace TwitterSearcher.ViewModels
 
         public IOrderedEnumerable<KeyValuePair<string, int>> Counter { get; set; }
 
-        public AnalyzeViewModel()
+        public SearchViewModel()
         {
         }
     }
